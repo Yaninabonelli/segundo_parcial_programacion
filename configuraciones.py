@@ -3,18 +3,14 @@ from archivos import*
 
 pygame.init()
 
-DEBUG = False
-FPS = 60
+DEBUG = True
+#FPS = 60
 
 ventana = [1300, 700]
 coordenadas_pantalla = (0,0)
-
-coordenadas_sacar_de_pantalla = (100,-5)
-
+coordenadas_sacar_de_pantalla = (1400,-5)
 ubicacion_piso = 616
 un_segundo = 1000 # un segundo
-dos_segundos = 2000
-cinco_segundos = 5000
 
 fuente_gris = (192, 192, 192)
 fuente_negro = (0, 0, 0)
@@ -25,6 +21,8 @@ VERDE = (0,255,0)
 
 limite_groot_izquierda = 1241
 limite_groot_derecha = 0
+
+ANCHO_RECT_GROOT = 5
 
 #FUENTES
 pygame.font.init()

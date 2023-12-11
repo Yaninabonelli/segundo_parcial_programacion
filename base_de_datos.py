@@ -1,9 +1,5 @@
 import sqlite3
 
-
-jugador = "ricardo"
-puntuacion = 55
-
 def crear_base():
     with sqlite3.connect("base_db\\jugadores.db") as conexion:
         try:
@@ -11,7 +7,7 @@ def crear_base():
             (
             id integer primary key autoincrement,
             nombre text,
-            puntaje text
+            puntaje integer
             )
             '''
             conexion.execute(sentencia)
@@ -32,10 +28,17 @@ def intertar_datos(nombre,puntaje):
             print("Error")
                 
             
-def mostrar_datos(identificador):#REVISAR
-    id = identificador
-    with sqlite3.connect("CLASE_sqlite/bd_btf.db") as conexion:
-        sentencia = "SELECT * FROM personajes WHERE id=?"
-        cursor=conexion.execute(sentencia,(id,))
-        for fila in cursor:
-            print(fila)
+def mostrar_datos():
+    lista_score = []
+    with sqlite3.connect("base_db\\jugadores.db") as conexion:
+        try:
+            sentencia = "SELECT nombre,puntaje FROM jugadores ORDER BY puntaje DESC LIMIT 5"
+            cursor = conexion.execute(sentencia)
+            
+            for fila in cursor:
+                lista_score.append(fila)
+            return lista_score
+        except:
+            print("Error")  
+            return False
+            

@@ -14,10 +14,11 @@ class Villano:
         self.coordenadas = coodenadas
         self.rectangulo.x = self.coordenadas[0]
         self.rectangulo.y = self.coordenadas[1]
-        self.derecha = True
+        self.izquierda = True
         self.posicion_inicial = True
         self.velocidad = velocidad
         self.mostrar_enemigo = True
+        self.vidas = 5
         
 
     def dibujar(self,pantalla):
@@ -31,8 +32,50 @@ class Villano:
             self.frame = 0     
         return lista_imagenes[self.frame]
     
-    def actualizar_estado(self,estado):
-        if estado == "golpea":
+    def actualizar_estado(self,estado,sentido):
+        if sentido == "izquierda":
+            
+            if estado == "avanza":
+                self.rectangulo.x-= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+            elif estado == "ataca":
+                self.rectangulo.x-= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+            elif estado =="retrocede":
+                self.rectangulo.x+= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+            elif estado == "dispara":
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                pass
+            else:
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                pass
+                
+        else:
+            
+            if estado == "avanza":
+                self.rectangulo.x+= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.transform.flip(self.superficie,True,False)
+            elif estado == "ataca":
+                self.rectangulo.x+= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.transform.flip(self.superficie,True,False)
+            elif estado =="retrocede":
+                self.rectangulo.x-= self.velocidad
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.transform.flip(self.superficie,True,False)
+            elif estado == "dispara":
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                pass
+            else:
+                self.superficie = pygame.image.load(self.conseguir_frame())
+                pass
+            
+             
+            
+            
+        """        if estado == "golpea":
             frame = 0
             self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["golpea"]))
             self.rectangulo.x-= self.velocidad
@@ -42,7 +85,7 @@ class Villano:
         elif estado == "dispara":   
             self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["dispara"]))    
         else:
-            self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))   
+            self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"])) """ 
              
 
     def sacar_de_pantalla(self):
@@ -114,6 +157,15 @@ class Enemigo:
                 self.superficie = pygame.transform.flip(self.superficie,True,False)
                 if self.rectangulo.x < self.limite_izquierda:
                     self.derecha = True
+
+    def explotar_enemigo(self,pantalla,lista_imagenes_explosion:list):
+            self.superficie_imagenes_explosion = pygame.image.load(lista_imagenes_explosion[0])
+            self_rectangulo_explosion = self.superficie_imagenes_explosion.get_rect()
+            self_rectangulo_explosion.x = self.rectangulo.x 
+            self_rectangulo_explosion.y = self.rectangulo.y
+            self.superficie = pygame.image.load(self.conseguir_frame(lista_imagenes_explosion))
+            pantalla.blit(self.superficie,self.rectangulo)
+
                 
 class Nave:
     def __init__(self,lista_imagenes:list):

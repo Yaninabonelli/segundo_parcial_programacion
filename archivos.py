@@ -15,6 +15,9 @@ pantalla_inico = "imagenes\pantalla_inicio.png"
 title_disable ="imagenes\\title_disable.png"
 title_enable = "imagenes\\title_enable.png"
 
+sonido_enable ="imagenes\sound_on.png"
+sonido_disable ="imagenes\sound_off.png"
+
 #MENU
 menu_inicio = "imagenes\menu_inicio.png"
 play_disable = "imagenes\play_disable.png"
@@ -77,18 +80,8 @@ lista_groot_izquierda = [groot_izquierda_uno,groot_izquierda_dos,groot_izquierda
 laser_der = "imagenes\laser.png"
 laser_izq = "imagenes\laser_2.png"
 
-bala_uno = "imagenes\\bala1.png"
-bala_dos = "imagenes\\bala2.png"
-bala_tres = "imagenes\\bala3.png"
-bala_cuatro = "imagenes\\bala4.png"
-bala_cinco = "imagenes\\bala5.png"
-bala_seis = "imagenes\\bala6.png"
-bala_siete = "imagenes\\bala7.png"
-bala_ocho = "imagenes\\bala8.png"
-bala_nueve = "imagenes\\bala9.png"
-bala_diez = "imagenes\\bala10.png"
-
-lista_balas = [bala_uno,bala_dos,bala_tres,bala_cuatro,bala_cinco,bala_seis,bala_siete,bala_ocho,bala_nueve,bala_diez]
+bala_uno = "imagenes\\bala_derecha.png"
+bala_dos = "imagenes\\bala_izquierda.png"
 
 #ENEMIGOS
 #THANOS
@@ -100,11 +93,7 @@ thanos_golpea_uno="imagenes\\thanos_golpea_1.png"
 thanos_golpea_dos="imagenes\\thanos_golpea_2.png"
 thanos_ataque = "imagenes\\thanos_ataque.png"
 thanos_dispara ="imagenes\\thanos_dispara.png"
-"""
-thanos_quieto =[thano_quieto_uno,thano_quieto_dos,thano_quieto_tres,thano_quieto_cuatro]
-thanos_golpea =[thano_ataque,thano_golpea_uno,thano_golpea_dos]
-thanos_dispara = [thano_ataque,thano_dispara]
-"""
+
 diccionario_thanos = {"quieto":[thanos_quieto_uno,thanos_quieto_dos,thanos_quieto_tres,thanos_quieto_cuatro],"golpea":[thanos_ataque,thanos_golpea_uno,thanos_golpea_dos],"dispara":[thanos_ataque,thanos_dispara]}
 
 explosion_uno = "imagenes\explosion1.png"

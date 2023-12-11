@@ -4,7 +4,7 @@ from configuraciones import*
 pygame.init()
 
 class plataforma:
-    def __init__(self,imagen:str,tipo,coodenadas,increct_inferior_x,increct_inferior_y,largo_rect_sup,largo_rect_inf,ancho_rect):
+    def __init__(self,imagen:str,tipo,coodenadas,increct_inferior_x,increct_inferior_y,largo_rect_sup,largo_rect_inf):
         self.superficie = pygame.image.load(imagen)
         self.rectangulo = self.superficie.get_rect()
         self.coordenadas = coodenadas
@@ -14,9 +14,11 @@ class plataforma:
         self.posicion_inicial = True
         self.increct_inferior_x = increct_inferior_x
         self.increct_inferior_y = increct_inferior_y
+        self.derect_superior_y = 4
         self.tipo = tipo
-        self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y,largo_rect_sup,ancho_rect)
-        self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+self.increct_inferior_x,self.rectangulo.y+self.increct_inferior_y,largo_rect_inf,ancho_rect)
+        self.ancho_rect_plataforma = 6
+        self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-self.derect_superior_y,largo_rect_sup,self.ancho_rect_plataforma)
+        self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+self.increct_inferior_x,self.rectangulo.y+self.increct_inferior_y,largo_rect_inf,self.ancho_rect_plataforma)
 
     def cambiar_ubicacion(self,coodenadas):
         self.coordenadas = coodenadas
@@ -32,9 +34,6 @@ class plataforma:
             pygame.draw.rect(pantalla,ROJO,self.rectangulo)
             pygame.draw.rect(pantalla,AZUL,self.rectangulo_superior)
             pygame.draw.rect(pantalla,AZUL,self.rectangulo_inferior)
-            """          if self.tipo == "grande":
-                pygame.draw.rect(pantalla,AZUL,self.rectangulo_inferior_der)
-                pygame.draw.rect(pantalla,AZUL,self.rectangulo_inferior_izq)"""
             
         pantalla.blit(self.superficie,self.rectangulo)
         
