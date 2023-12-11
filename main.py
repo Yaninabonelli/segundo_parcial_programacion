@@ -138,7 +138,7 @@ def ver_score(sonido_on):
 def jugar(sonido_on):
     pygame.display.set_caption("Groot and The Infinity Gems")
     #VILLANO
-    thanos = Villano(diccionario_thanos,(854,440),5)
+    thanos = Villano(diccionario_thanos,(854,440))
     #ENEMIGOS
     nave = Nave(lista_naves)
     marciano = Enemigo(lista_marcianos,(82,100),5,"marciano")
@@ -177,7 +177,7 @@ def jugar(sonido_on):
     if len(nombre_usuario) > 0 :
         groot.nombre = nombre_usuario
         running = True
-        nivel = 3
+        nivel = 2
     else:
         running = False
         
@@ -370,7 +370,7 @@ def finalizar_juego(nombre,puntaje,sonido_on):
     running = True
     
     nombre = str(nombre)
-    puntaje = int(puntaje)
+    puntaje = str(puntaje)
     
     crear_base()
     intertar_datos(nombre,puntaje)
@@ -453,17 +453,38 @@ def dibujar_nivel(sonido_on,nivel,fondo_param:str,pantalla,coordenadas:tuple,lis
         nave_escape.dibujar(pantalla)
         
     else:
-        thanos_obj.dibujar(pantalla)
-        
-        if (thanos_obj.rectangulo.x - personaje.rectangulo.x) <=400:
-            thanos_obj.actualizar_estado("golpea")
-        if (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 400 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) <= 600:
+        if personaje.rectangulo_bala.colliderect(thanos_obj.rectangulo):
+            thanos_obj.vidas-=1
+            if (sonido_on):
+                musica_gameover.play()
+        else:
+            musica_gameover.stop()
+         
+        if personaje.rectangulo.x > thanos_obj.rectangulo.x:
+            personaje.sentido = "derecha"
+        else:
+            personaje.sentido = "izquierda"
+            
+        if (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 400 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 800:
+            thanos_obj.actualizar_estado("avanza")
+        elif (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 100 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 400: 
             thanos_obj.actualizar_estado("dispara")
+        elif (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 0 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 100:
+            thanos_obj.actualizar_estado("ataca")
+            thanos_obj.actualizar_estado("retrocedde")
         else:
             thanos_obj.actualizar_estado("quieto")
-            
-        thanos_obj.dibujar(pantalla)   
-    
+        
+        if thanos_obj.vidas == 0:
+            thanos_obj.explotar(pantalla,lista_explosion)
+            thanos_obj.mostrar_enemigo = False
+            gana_partida = True
+        
+        if thanos_obj.mostrar_enemigo == True:
+            thanos_obj.dibujar(pantalla)
+        else:
+            thanos_obj.sacar_de_pantalla()           
+  
     if personaje.rectangulo.colliderect(nave_enemigo.rectangulo):
         if (sonido_on):
             sonido_gameover.play()
@@ -490,6 +511,8 @@ def apagar_musica():
     sonido_despegue.stop()
     sonido_gameover.stop()
     sonido_marciano.stop()
+    sonido_gema.stop()
+    sonido_gana_nivel.stop()
 
 def crear_cadena_cronometro(segundos, minutos):
     separador = ":"

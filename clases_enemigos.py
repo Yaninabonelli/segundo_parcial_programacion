@@ -5,7 +5,7 @@ from configuraciones import*
 pygame.init()
 
 class Villano:
-    def __init__(self,diccionario:dict,coodenadas,velocidad):
+    def __init__(self,diccionario:dict,coodenadas):
         self.frame = 0
         self.diccionario_imagenes = diccionario
         self.superficie = pygame.image.load(self.diccionario_imagenes["quieto"][0])
@@ -14,9 +14,9 @@ class Villano:
         self.coordenadas = coodenadas
         self.rectangulo.x = self.coordenadas[0]
         self.rectangulo.y = self.coordenadas[1]
-        self.izquierda = True
+        self.sentido = "izquierda"
         self.posicion_inicial = True
-        self.velocidad = velocidad
+        self.velocidad = 100
         self.mostrar_enemigo = True
         self.vidas = 5
         
@@ -32,61 +32,46 @@ class Villano:
             self.frame = 0     
         return lista_imagenes[self.frame]
     
-    def actualizar_estado(self,estado,sentido):
-        if sentido == "izquierda":
-            
+    def actualizar_estado(self,estado):
+        if self.sentido == "izquierda":
             if estado == "avanza":
                 self.rectangulo.x-= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))
             elif estado == "ataca":
                 self.rectangulo.x-= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["golpea"]))
             elif estado =="retrocede":
                 self.rectangulo.x+= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))
             elif estado == "dispara":
-                self.superficie = pygame.image.load(self.conseguir_frame())
-                pass
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["dispara"]))
             else:
-                self.superficie = pygame.image.load(self.conseguir_frame())
-                pass
-                
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))    
         else:
-            
             if estado == "avanza":
                 self.rectangulo.x+= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))
                 self.superficie = pygame.transform.flip(self.superficie,True,False)
             elif estado == "ataca":
                 self.rectangulo.x+= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["golpea"]))
                 self.superficie = pygame.transform.flip(self.superficie,True,False)
             elif estado =="retrocede":
                 self.rectangulo.x-= self.velocidad
-                self.superficie = pygame.image.load(self.conseguir_frame())
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))
                 self.superficie = pygame.transform.flip(self.superficie,True,False)
             elif estado == "dispara":
-                self.superficie = pygame.image.load(self.conseguir_frame())
-                pass
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["dispara"]))
             else:
-                self.superficie = pygame.image.load(self.conseguir_frame())
-                pass
-            
-             
-            
-            
-        """        if estado == "golpea":
-            frame = 0
-            self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["golpea"]))
-            self.rectangulo.x-= self.velocidad
-            if frame == 2:
-                self.rectangulo.x+= self.velocidad
-                
-        elif estado == "dispara":   
-            self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["dispara"]))    
-        else:
-            self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"])) """ 
-             
+                self.superficie = pygame.image.load(self.conseguir_frame(self.diccionario_imagenes["quieto"]))   
+    
+    def explotar(self,pantalla,lista_imagenes_explosion:list):
+        self.superficie_imagenes_explosion = pygame.image.load(lista_imagenes_explosion[0])
+        self_rectangulo_explosion = self.superficie_imagenes_explosion.get_rect()
+        self_rectangulo_explosion.x = self.rectangulo.x 
+        self_rectangulo_explosion.y = self.rectangulo.y
+        self.superficie = pygame.image.load(self.conseguir_frame(lista_imagenes_explosion))
+        pantalla.blit(self.superficie,self.rectangulo)        
 
     def sacar_de_pantalla(self):
         self.coordenadas = coordenadas_sacar_de_pantalla

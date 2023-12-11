@@ -3,7 +3,7 @@ from archivos import*
 
 pygame.init()
 
-DEBUG = True
+DEBUG = False
 #FPS = 60
 
 ventana = [1300, 700]
