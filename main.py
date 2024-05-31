@@ -21,6 +21,10 @@ pygame.display.set_icon(icono)
 cronometro = pygame.USEREVENT
 pygame.time.set_timer(cronometro,un_segundo)
 
+#tiempo_naves
+tiempo_de_naves = pygame.USEREVENT
+pygame.time.set_timer(tiempo_de_naves,tres_segundos)
+
 #clock
 clock = pygame.time.Clock()
 
@@ -136,35 +140,22 @@ def ver_score(sonido_on):
         pygame.display.update()
 
 def jugar(sonido_on):
+    lista_plataformas = []
+    lista_enemigos = [] 
+    lista_de_naves = []   
+    lista_gemas = []
     pygame.display.set_caption("Groot and The Infinity Gems")
     #VILLANO
-    thanos = Villano(diccionario_thanos,(854,440))
-    #ENEMIGOS
-    nave = Nave(lista_naves)
-    marciano = Enemigo(lista_marcianos,(82,100),5,"marciano")
-    robot_uno = Enemigo(lista_robots,(961,573),5,"robot")
-    robot_dos = Enemigo(lista_robots,(500,573),5,"robot")
-    lista_enemigos = [marciano,robot_uno,robot_dos]
+    thanos = Villano(diccionario_thanos,(854,440),lista_de_bolas)
     #NAVES ESCAPE
-    nave_escape_uno = Nave_salida(nave_salida_uno)
-    nave_escape_dos = Nave_salida(nave_salida_dos)
-    #GEMAS
-    gema_uno = Gema(gema_violeta,(230,50))
-    gema_dos = Gema(gema_verde,(480,280))
-    gema_tres = Gema(gema_marron,(540,50))
-    gema_cuatro = Gema(gema_amarillo,(950,200))
-    gema_cinco = Gema(gema_azul,(1000,500))
-    lista_gemas = [gema_uno,gema_dos,gema_tres,gema_cuatro,gema_cinco]
-    #PLATAFORMAS        
-    plataforma_chica = plataforma(plataforma_uno,"estatica",(500,375),3,32,211,204)
-    plataforma_chica_dos = plataforma(plataforma_uno,"estatica",(280,450),3,32,211,204)
-    plataforma_grande = plataforma(plataforma_dos,"estatica",(70,151),28,62,692,630)
-    plataforma_movediza = plataforma(plataforma_tres,"movediza",(900,190),2,30,116,112)
-    plataforma_nave = plataforma(plataforma_cuatro,"estatica",(1178,185),2,26,177,173)
-    lista_plataformas = [plataforma_chica,plataforma_grande,plataforma_movediza,plataforma_nave,plataforma_chica_dos]
-
+    nave_escape_uno = Nave_salida(nave_salida_uno,(1178,20),lista_imagenes_humo)
+    nave_escape_dos = Nave_salida(nave_salida_dos,(1178,20),lista_imagenes_humo)
+    nave_escape_tres = Nave_salida(nave_salida_dos,(1178,20),lista_imagenes_humo)
+    #NAVE ENEMIGO
+    nave_enemigo = Nave(lista_naves,30)
+    lista_de_naves.append(nave_enemigo)
     #PERSONAJE
-    groot = Heroe(groot_uno,lista_groot_derecha, lista_groot_izquierda,laser_der,laser_izq,bala_uno,bala_dos,lista_plataformas)
+    groot = Heroe(groot_uno,lista_groot_derecha,lista_laser,lista_balas_groot,lista_plataformas,lista_groot_muere)
     
     ultimo_movimiento = "derecha"
     segundos = 0
@@ -177,7 +168,7 @@ def jugar(sonido_on):
     if len(nombre_usuario) > 0 :
         groot.nombre = nombre_usuario
         running = True
-        nivel = 2
+        nivel = 1
     else:
         running = False
         
@@ -192,7 +183,15 @@ def jugar(sonido_on):
                     segundos+=1
                     if segundos>=60:
                         segundos = 0 
-                        minutos+=1    
+                        minutos+=1 
+                        
+                if event.type == tiempo_de_naves and nivel == 1:
+                    nave_enemigo = Nave(lista_naves,20)
+                    lista_de_naves.append(nave_enemigo)
+                    
+                if event.type == tiempo_de_naves and nivel == 2:
+                    nave_enemigo = Nave(lista_naves,20)
+                    lista_de_naves.append(nave_enemigo)                        
                         
         lista_de_teclas = pygame.key.get_pressed()
         
@@ -209,57 +208,123 @@ def jugar(sonido_on):
                 groot.saltar()
                 groot.dispara = False
             elif lista_de_teclas[pygame.K_SPACE]:
+                if(sonido_on):
+                    sonido_groot_dispara.play()
                 groot.disparar(ultimo_movimiento)
                 groot.dispara = True
  
                 
         if nivel == 1:
             if iniciar_nivel == True:
+                plataforma_chica = Plataforma(plataforma_uno,"estatica",(500,375),"chica")
+                plataforma_chica_dos = Plataforma(plataforma_uno,"estatica",(280,450),"chica")
+                plataforma_grande = Plataforma(plataforma_dos,"estatica",(70,145),"grande")
+                plataforma_movediza = Plataforma(plataforma_tres,"movediza",(1025,190),"movediza")
+                plataforma_movediza_dos = Plataforma(plataforma_tres,"movediza",(775,600),"movediza")
+                plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave")
+                plataforma_piso = Plataforma(plataforma_piso_uno,"estatica",(0,617),"piso")
+                lista_plataformas = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
+                groot.lista_plataformas = lista_plataformas
+                #ENEMIFOS       
+                marciano = Enemigo(lista_marcianos,(82,100),5,"marciano",725,79)
+                robot_uno = Enemigo(lista_robots,(961,573),5,"robot",1250,300)
+                robot_dos = Enemigo(lista_robots,(500,573),5,"robot",1250,300)
+                lista_enemigos = [marciano,robot_uno,robot_dos]
+                #GEMAS
+                gema_uno = Gema(gema_violeta,(230,50))
+                gema_dos = Gema(gema_verde,(480,280))
+                gema_tres = Gema(gema_marron,(540,50))
+                gema_cuatro = Gema(gema_amarillo,(850,200))
+                gema_cinco = Gema(gema_azul,(1100,500))
+                lista_gemas = [gema_uno,gema_dos,gema_tres,gema_cuatro,gema_cinco]
                 if (sonido_on):
                     musica_nivel_uno.play()
-                iniciar_nivel = False
-            resultado = dibujar_nivel(sonido_on,nivel,fondo_primer_nivel,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_uno,nave,lista_explosion,lista_imagenes_humo,lista_plataformas,lista_enemigos,ultimo_movimiento,thanos)  
+                iniciar_nivel = False #CONFIGURACION UNICA
+            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_uno,lista_naves,diccionario_explosiones,lista_enemigos,thanos)  
             if resultado == True:
+                if len(lista_enemigos)>0:
+                    for enemigo  in lista_enemigos:
+                        lista_enemigos.remove(enemigo)
+                if len(lista_plataformas)>0:
+                    for plataforma  in lista_plataformas:
+                        lista_plataformas.remove(plataforma) 
+                musica_nivel_uno.stop()
                 iniciar_nivel = True
                 segundos = 0
                 minutos = 0
                 nivel = 2
         elif nivel ==2:
             if iniciar_nivel == True:
-                musica_nivel_uno.stop()
-                plataforma_chica.cambiar_ubicacion((364,389))
-                plataforma_chica_dos.cambiar_ubicacion((762,389))
-                plataforma_grande.cambiar_ubicacion((327,144))
-                plataforma_movediza.cambiar_ubicacion((196,144))
-                gema_uno.cambiar_ubicacion((654,60))
-                gema_dos.cambiar_ubicacion((472,300))
-                gema_tres.cambiar_ubicacion((859,300))
-                gema_cuatro.cambiar_ubicacion((677,517))
-                gema_cinco.cambiar_ubicacion((1153,406))  
-                marciano.cambiar_ubicacion((800,89))
-                robot_uno.cambiar_ubicacion((961,573))
-                robot_dos.cambiar_ubicacion((500,573))
-                normalizar_datos(lista_gemas,lista_enemigos)
+                #UBICACION PLATAFORMAS
+                plataforma_chica = Plataforma(plataforma_uno,"estatica",(350,430),"chica")
+                plataforma_chica_dos = Plataforma(plataforma_uno,"estatica",(750,430),"chica")
+                plataforma_grande = Plataforma(plataforma_dos,"estatica",(300,144),"grande")
+                plataforma_movediza = Plataforma(plataforma_tres,"movediza",(170,144),"movediza")
+                plataforma_movediza_dos = Plataforma(plataforma_tres,"movediza",(1000,600),"movediza")
+                plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave")
+                plataforma_piso = Plataforma(plataforma_piso_dos,"estatica",(0,617),"piso")
+                lista_plataformas = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
+                groot.lista_plataformas = lista_plataformas
+                #GEMAS 
+                gema_uno = Gema(gema_violeta,(640,60))
+                gema_dos = Gema(gema_verde,(440,300))
+                gema_tres = Gema(gema_marron,(840,300))
+                gema_cuatro = Gema(gema_amarillo,(640,517))
+                gema_cinco = Gema(gema_azul,(1153,406))
+                gema_seis = Gema(gema_azul,(100,100))
+                lista_gemas = [gema_uno,gema_dos,gema_tres,gema_cuatro,gema_cinco,gema_seis] 
+                #ENEMIGOS
+                robot_uno = Enemigo(lista_robots,(800,95),5,"robot",900,300)
+                robot_dos = Enemigo(lista_robots,(400,95),5,"robot",900,300)
+                marciano_uno = Enemigo(lista_marcianos,(900,573),5,"marciano",1200,10)
+                marciano_dos = Enemigo(lista_marcianos,(600,573),5,"marciano",1200,10)
+                marciano_tres = Enemigo(lista_marcianos,(300,573),5,"marciano",1200,10)              
+                lista_enemigos = [robot_uno,robot_dos,marciano_uno,marciano_dos,marciano_tres] 
                 if (sonido_on): 
                     musica_nivel_dos.play()
                 iniciar_nivel = False
-            resultado = dibujar_nivel(sonido_on,nivel,fondo_segundo_nivel,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_dos,nave,lista_explosion,lista_imagenes_humo,lista_plataformas,lista_enemigos,ultimo_movimiento,thanos)  
+            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_dos,lista_naves,diccionario_explosiones,lista_enemigos,thanos)  
             if resultado == True:
-                iniciar_nivel = True
+                print("entro")
+                musica_nivel_dos.stop() 
+                if len(lista_enemigos)>0:
+                    for enemigo  in lista_enemigos:
+                        lista_enemigos.remove(enemigo)
+                if len(lista_plataformas)>0:
+                    for plataforma  in lista_plataformas:
+                        lista_plataformas.remove(plataforma)        
+                variable = len(lista_plataformas)    
+                print("aaaaaaaaaaaaaaaaaaaaaaaaaaasaaa {0}",variable)       
                 segundos = 0
                 minutos = 0
                 nivel = 3
         elif nivel == 3:
             if iniciar_nivel == True:
-                musica_nivel_dos.stop()
-                plataforma_chica.cambiar_ubicacion((1400,800))
-                plataforma_chica_dos.cambiar_ubicacion((1400,800))
-                plataforma_grande.cambiar_ubicacion((1400,800))
-                plataforma_movediza.cambiar_ubicacion((1400,800))
+                nave_escape_tres = Nave_salida(nave_salida_dos,(1178,20),lista_imagenes_humo)
+                incremento = 100
+                for i in range(7):
+                    if i%2 == 0:
+                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
+                        plataforma_movediza.posicion_inicial = True
+                        print("par")
+                    else:
+                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
+                        plataforma_movediza.posicion_inicial = False
+                        print("impar")
+                    incremento = 160 + incremento
+                    lista_plataformas.append(plataforma_movediza) 
+                     
+                plataforma_piso = Plataforma(plataforma_piso_tres,"estatica",(0,617),"piso")  
+                plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave") 
+                
+                lista_plataformas.append(plataforma_piso)
+                lista_plataformas.append(plataforma_nave)
+                groot.lista_plataformas = lista_plataformas
+                
                 if (sonido_on): 
                     musica_nivel_tres.play()
                 iniciar_nivel = False
-            resultado =  dibujar_nivel(sonido_on,nivel,fondo_tercer_nivel,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_dos,nave,lista_explosion,lista_imagenes_humo,lista_plataformas,lista_enemigos,ultimo_movimiento,thanos)
+            resultado =  dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_tres,lista_naves,diccionario_explosiones,lista_enemigos,thanos)
             if resultado == True:
                 apagar_musica()
                 finalizar_juego(groot.nombre,groot.puntaje,sonido_on)
@@ -272,6 +337,8 @@ def jugar(sonido_on):
         
         if groot.vidas == 0:
             apagar_musica()
+            if (sonido_on):
+                sonido_gameover.play()
             game_over(groot.nombre,groot.puntaje,sonido_on)
     
         pygame.display.update()    
@@ -340,8 +407,6 @@ def game_over(nombre,puntaje,sonido_on):
     intertar_datos(nombre,puntaje)
     
     while running:
-        if (sonido_on):
-            musica_gameover.play()
         posicion_del_mouse = pygame.mouse.get_pos()
         pantalla.blit(superficie_pantalla_gameover,coordenadas_pantalla)
         boton_regreso_gameover = botones((41,29),flecha_gameover_disable,flecha_gameover)
@@ -353,8 +418,7 @@ def game_over(nombre,puntaje,sonido_on):
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 boton_regreso_gameover.seleccionar(posicion_del_mouse)
-                musica_gameover.stop()
-                ingresar_menu()
+                ingresar_menu(sonido_on)
                 
         nombre_sur = fuente_gameover.render(f"Nombre: {nombre}",True,fuente_blanco)
         pantalla.blit(nombre_sur,(330,347))                   
@@ -400,106 +464,193 @@ def finalizar_juego(nombre,puntaje,sonido_on):
           
         pygame.display.update()    
       
-def dibujar_nivel(sonido_on,nivel,fondo_param:str,pantalla,coordenadas:tuple,lista_de_gemas,personaje,nave_escape,nave_enemigo,lista_explosion,lista_humo,lista_de_plataformas,lista_de_enemigos,ult_movimiento,thanos_obj):
-    fondo = pygame.image.load(fondo_param) 
-    pantalla.blit(fondo,coordenadas)
+def dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_fondos,pantalla,coordenadas:tuple,lista_de_gemas,personaje,nave_escape,lista_imagenes_naves,diccionario_explosiones,lista_de_enemigos,thanos_obj):
     gana_partida = False
 
-    if nivel == 1 or nivel == 2:
-        #GEMAS
+    if nivel == 1:
+        fondo = pygame.image.load(lista_fondos[0]) 
+        pantalla.blit(fondo,coordenadas)
+        personaje.lista_plataformas[4].posicion_inicial = False #movediza_dos
+            
+    if nivel == 2:
+        fondo = pygame.image.load(lista_fondos[1]) 
+        pantalla.blit(fondo,coordenadas)
+        
+    if nivel == 3:
+        fondo = pygame.image.load(lista_fondos[2]) 
+        pantalla.blit(fondo,coordenadas)
+        
+        distancia = abs(personaje.rectangulo.x-thanos_obj.rectangulo.x) #distancia respecto de Groot
+       
+        if personaje.rectangulo.x > thanos_obj.rectangulo.x: #direccion respecto de Groot
+            thanos_obj.sentido = "derecha"
+        else:
+            thanos_obj.sentido = "izquierda"
+     
+        if len(thanos_obj.lista_disparos)>0:
+            for element in thanos_obj.lista_disparos:         
+                if element.rectangulo.colliderect(personaje.rectangulo):
+                    thanos_obj.lista_disparos.remove(element)  
+                    if (sonido_on):
+                        sonido_seleccion.play()
+                    personaje.perder_vida()
+                    personaje.vidas-=1
+        
+        if len(thanos_obj.lista_disparos)>0:  #disparos de thanos
+            for element in thanos_obj.lista_disparos:   
+                element.actualizar(400)#trayectoria deseada
+                element.dibujar(pantalla)
+                if element.estado == "inactiva": #porque se paso de la trayectoria
+                    thanos_obj.lista_disparos.remove(element)             
+                        
+        #colision de groot con thanos
+        if personaje.rectangulo_cabeza.colliderect(thanos_obj.rectangulo) or personaje.rectangulo_cuerpo.colliderect(thanos_obj.rectangulo):
+            personaje.vidas-=1
+            personaje.perder_vida()
+            if (sonido_on):
+                sonido_seleccion.play()
+                
+        #valida si thanos muere
+        if thanos_obj.vidas <=  0 and thanos_obj.mostrar_enemigo == True:
+            if (sonido_on):
+                sonido_thanos_gameover.play()#soy inevitable     
+            explosion_thanos = Explosion(thanos_obj.rectangulo.x,thanos_obj.rectangulo.y,diccionario_explosiones["explosion_nave"])
+            explosion_thanos.activar_explosion()
+            explosion_thanos.dibujar(pantalla)
+            thanos_obj.mostrar_enemigo = False
+            personaje.permitir_escape = True
+
+        if thanos_obj.mostrar_enemigo == True:
+            thanos_obj.dibujar(pantalla)
+            estado_thanos = thanos_obj.actualizar_estado(distancia,personaje.rectangulo.x)  
+            if estado_thanos == "dispara":
+                if (sonido_on):
+                    sonido_thanos_dispara.play()               
+        else:
+            thanos_obj.sacar_de_pantalla()                                         
+    
+    #/////////////////////////////////////////////////////////////////////////////////////////////////////
+    #COLISIONES
+    if len(lista_de_enemigos)>0:
+        for enemigo in lista_de_enemigos:
+            if personaje.rectangulo_cabeza.colliderect(enemigo.rectangulo_interno) or personaje.rectangulo_cuerpo.colliderect(enemigo.rectangulo_interno):
+                if (sonido_on):
+                    sonido_seleccion.play()
+                personaje.perder_vida()
+                personaje.vidas-=1
+
+    if len(lista_de_enemigos)>0:
+        for enemigo in lista_de_enemigos:           
+            for element in personaje.lista_disparos:
+                if enemigo.rectangulo.colliderect(element.rectangulo):
+                    if (sonido_on):
+                        sonido_explosion_enemigo.play()
+                    explosion_nave = Explosion(enemigo.rectangulo.x,enemigo.rectangulo.y,diccionario_explosiones["explosion_enemigo"])
+                    explosion_nave.activar_explosion()
+                    explosion_nave.dibujar(pantalla)
+                    lista_de_enemigos.remove(enemigo)
+                    personaje.puntaje+=10
+     
+    if len(personaje.lista_disparos)>0: 
+            for element in personaje.lista_disparos:                  
+                if len(lista_de_naves)>0:
+                    for nave in lista_de_naves:             
+                        if element.rectangulo.colliderect(nave.rectangulo):
+                            if (sonido_on):
+                                sonido_explosion_nave.play()
+                            personaje.puntaje+=10
+                            personaje.lista_disparos.remove(element)           
+                            explosion_nave = Explosion(element.rectangulo.x,element.rectangulo.y,diccionario_explosiones["explosion_nave"])
+                            explosion_nave.activar_explosion()
+                            explosion_nave.dibujar(pantalla)
+                            lista_de_naves.remove(nave)   
+                if nivel == 3:            
+                    if element.rectangulo.colliderect(thanos_obj.rectangulo):
+                        thanos_obj.perder_poder()
+                        thanos_obj.vidas-=1
+                        
+    if len(lista_de_naves)>0:
+            for element in lista_de_naves:
+                if personaje.rectangulo.colliderect(element.rectangulo_interno):
+                    if (sonido_on):
+                        sonido_seleccion.play()
+                    explosion_nave = Explosion(element.rectangulo.x,element.rectangulo.y,diccionario_explosiones["explosion_nave"])
+                    explosion_nave.activar_explosion()
+                    explosion_nave.dibujar(pantalla)    
+                    #personaje.vidas-=1
+                    #personaje.volver_posicion_inicial()
+                    lista_de_naves.remove(element)   
+    
+    #COMPORTAMIMENTO PLATAFORMAS
+    if len(personaje.lista_plataformas)>0:
+        for plataforma in personaje.lista_plataformas:
+            if plataforma.tipo == "movediza":
+                plataforma.mover_plataforma(ubicacion_piso,140,5) 
+                
+                if nivel == 3:
+                    plataforma.mover_plataforma(500,10,10) 
+            plataforma.dibujar(pantalla)                
+        
+    #COMPORTAMIENTO DE NAVES
+    if len(lista_de_naves)>0:
+        for element in lista_de_naves:
+            element.mover_nave()
+            element.dibujar(pantalla)
+            if element.rectangulo.x < 0:
+                lista_de_naves.remove(element)
+    
+    # COMPORTAMIENTO GEMAS
+    if len(lista_de_gemas) >0:
         for gema in lista_de_gemas:
+            gema.dibujar(pantalla)
             if personaje.rectangulo.colliderect(gema.rectangulo):
                 if (sonido_on):
                     sonido_gema.play()
-                gema.mostrar_gema = False
-                personaje.puntaje+=10
-            if gema.mostrar_gema == True:
-                gema.dibujar(pantalla)
-            else:
-                gema.sacar_de_pantalla()
-                
-        for plataforma in lista_de_plataformas:
-            if plataforma.tipo == "movediza":
-                plataforma.mover_plataforma(ubicacion_piso,190,5) 
-            plataforma.dibujar(pantalla)
+                personaje.puntaje+=50
+                lista_de_gemas.remove(gema)
+                if len(lista_gemas) == 0:
+                    if (sonido_on):
+                        sonido_gana_nivel.play()       
+    else:
+        personaje.permitir_escape = True
         
-        for enemigo in lista_de_enemigos:
-            if personaje.rectangulo.colliderect(enemigo.rectangulo):
-                if (sonido_on):
-                    sonido_gameover.play()
-                personaje.vidas-=1
-                
-            if personaje.rectangulo_bala.colliderect(enemigo.rectangulo):
-                enemigo.explotar_enemigo(pantalla,lista_explosion)
-                enemigo.mostrar_enemigo = False
-                personaje.puntaje+=10
-                
-            if enemigo.mostrar_enemigo == True:
-                if (sonido_on):
-                    sonido_marciano.play()
+    #COMPORTAMIENTO DE ENEMIGOS
+    if len(lista_de_enemigos)>0:
+            for enemigo in lista_de_enemigos:
                 enemigo.mover_enemigo()
-                enemigo.dibujar(pantalla)
-            else:
-                sonido_marciano.stop()
-                enemigo.sacar_de_pantalla()     
-        
+                enemigo.dibujar(pantalla) 
+         
+    #COMPORTAMIENTO DISPAROS 
+    if len(personaje.lista_disparos)>0:  #disparos de groot
+        for element in personaje.lista_disparos:   
+            element.actualizar(500)#trayectoria deseada
+            element.dibujar(pantalla)
+            if element.estado == "inactiva":
+                personaje.lista_disparos.remove(element)          
+                   
+    #COMPORTAMIENTO NAVE ESCAPE - Si no hay mas gemas o thanos esta muerto
+    if personaje.permitir_escape == True:
         if personaje.rectangulo.colliderect(nave_escape.rectangulo_interno):
+            sonido_gana_nivel.stop()
             if (sonido_on):
                 sonido_despegue.play()
-            nave_escape.realizar_escape(pantalla,lista_humo)
-            gana_partida = True
             personaje.volver_posicion_inicial()
+            nave_escape.estado = "despego"    
             
-        nave_escape.dibujar(pantalla)
+        if  nave_escape.estado == "despego":        
+            nave_escape.realizar_escape()
         
-    else:
-        if personaje.rectangulo_bala.colliderect(thanos_obj.rectangulo):
-            thanos_obj.vidas-=1
-            if (sonido_on):
-                musica_gameover.play()
-        else:
-            musica_gameover.stop()
-         
-        if personaje.rectangulo.x > thanos_obj.rectangulo.x:
-            personaje.sentido = "derecha"
-        else:
-            personaje.sentido = "izquierda"
-            
-        if (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 400 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 800:
-            thanos_obj.actualizar_estado("avanza")
-        elif (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 100 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 400: 
-            thanos_obj.actualizar_estado("dispara")
-        elif (thanos_obj.rectangulo.x - personaje.rectangulo.x) > 0 and (thanos_obj.rectangulo.x - personaje.rectangulo.x) < 100:
-            thanos_obj.actualizar_estado("ataca")
-            thanos_obj.actualizar_estado("retrocedde")
-        else:
-            thanos_obj.actualizar_estado("quieto")
-        
-        if thanos_obj.vidas == 0:
-            thanos_obj.explotar(pantalla,lista_explosion)
-            thanos_obj.mostrar_enemigo = False
+        if nave_escape.rectangulo_piso.y < 0:
+            nave_escape.estado = "estacionada"  
+            personaje.permitir_escape = False
             gana_partida = True
         
-        if thanos_obj.mostrar_enemigo == True:
-            thanos_obj.dibujar(pantalla)
-        else:
-            thanos_obj.sacar_de_pantalla()           
-  
-    if personaje.rectangulo.colliderect(nave_enemigo.rectangulo):
-        if (sonido_on):
-            sonido_gameover.play()
-        nave_enemigo.explotar_nave(pantalla,lista_explosion)
-        personaje.vidas-=1  
-            
-    nave_enemigo.mover_nave(40)  
-    nave_enemigo.dibujar(pantalla)
+    nave_escape.dibujar(pantalla)
     personaje.actualizar_gravedad()  
     personaje.actualizar()
-    personaje.dibujar(pantalla,ult_movimiento)
+    personaje.dibujar(pantalla)
 
     if gana_partida == True:
-        if (sonido_on):
-            sonido_gana_nivel.play()
         return True
     else:
         return False
@@ -520,12 +671,6 @@ def crear_cadena_cronometro(segundos, minutos):
     minutos = (str(minutos)).zfill(2)
     cadena = separador.join([minutos,segundos])
     return cadena
-
-def normalizar_datos(lista_gemas,lista_enemigos):
-    for element in lista_gemas:
-        element.mostrar_gema =True
-    for element in lista_enemigos:
-        element.mostrar_enemigo =True
     
 iniciar()
 pygame.display.quit()

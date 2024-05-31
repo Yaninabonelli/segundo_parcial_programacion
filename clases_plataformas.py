@@ -3,8 +3,9 @@ from configuraciones import*
 
 pygame.init()
 
-class plataforma:
-    def __init__(self,imagen:str,tipo,coodenadas,increct_inferior_x,increct_inferior_y,largo_rect_sup,largo_rect_inf):
+class Plataforma:
+    def __init__(self,imagen:str,tipo,coodenadas,nombre):
+        self.nombre = nombre
         self.superficie = pygame.image.load(imagen)
         self.rectangulo = self.superficie.get_rect()
         self.coordenadas = coodenadas
@@ -12,28 +13,59 @@ class plataforma:
         self.rectangulo.y = self.coordenadas[1]
         self.abajo = True
         self.posicion_inicial = True
-        self.increct_inferior_x = increct_inferior_x
-        self.increct_inferior_y = increct_inferior_y
-        self.derect_superior_y = 4
         self.tipo = tipo
-        self.ancho_rect_plataforma = 6
-        self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-self.derect_superior_y,largo_rect_sup,self.ancho_rect_plataforma)
-        self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+self.increct_inferior_x,self.rectangulo.y+self.increct_inferior_y,largo_rect_inf,self.ancho_rect_plataforma)
 
-    def cambiar_ubicacion(self,coodenadas):
-        self.coordenadas = coodenadas
-        self.rectangulo.x = self.coordenadas[0]
-        self.rectangulo.y = self.coordenadas[1]
-        self.rectangulo_superior.x = self.rectangulo.x
-        self.rectangulo_superior.y = self.rectangulo.y
-        self.rectangulo_inferior.x = self.rectangulo.x + self.increct_inferior_x
-        self.rectangulo_inferior.y = self.rectangulo.y + self.increct_inferior_y
-         
+        if self.nombre  == "chica": #x #y #largo #ancho
+            self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y,211,10)
+            self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+10,self.rectangulo.y+30,202,5)
+        elif self.nombre  =="grande": #x #y #largo #ancho
+            self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-1,692,10)
+            self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+20,self.rectangulo.y+57,630,5)
+        elif self.nombre  =="movediza": #x #y #largo #ancho
+            self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-1,116,10)
+            self.rectangulo_inferior = pygame.Rect(self.rectangulo.x+5,self.rectangulo.y+28,112,5)     
+        elif self.nombre  =="nave": #x #y #largo #ancho
+            self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-2,177,10)
+            self.rectangulo_inferior =pygame.Rect(self.rectangulo.x,self.rectangulo.y+23,173,5)
+        elif self.nombre  =="piso": #x #y #largo #ancho
+            self.rectangulo_superior = pygame.Rect(self.rectangulo.x,self.rectangulo.y-1,1299,10)
+            self.rectangulo_inferior = pygame.Rect(self.rectangulo.x,694,1299,5)                
+
+    def cambiar_ubicacion(self,pos_x,pos_y):
+        self.rectangulo.x = pos_x
+        self.rectangulo.y = pos_y
+        #ACTUALIZAR RECTANGULOS
+        if self.nombre == "chica": #x #y #largo #ancho
+            self.rectangulo_superior.x = self.rectangulo.x
+            self.rectangulo_superior.y = self.rectangulo.y-3
+            self.rectangulo_inferior.x = self.rectangulo.x+10
+            self.rectangulo_inferior.y =self.rectangulo.y+30
+        elif self.nombre =="grande": #x 
+            self.rectangulo_superior.x = self.rectangulo.x
+            self.rectangulo_superior.y = self.rectangulo.y-1
+            self.rectangulo_inferior.x = self.rectangulo.x+20
+            self.rectangulo_inferior.y =self.rectangulo.y+57
+        elif self.nombre =="movediza": 
+            self.rectangulo_superior.x = self.rectangulo.x
+            self.rectangulo_superior.y = self.rectangulo.y-1
+            self.rectangulo_inferior.x = self.rectangulo.x+5
+            self.rectangulo_inferior.y =self.rectangulo.y+28
+        elif self.nombre =="nave":
+            self.rectangulo_superior.x = self.rectangulo.x
+            self.rectangulo_superior.y = self.rectangulo.y-2
+            self.rectangulo_inferior.x = self.rectangulo.x
+            self.rectangulo_inferior.y =self.rectangulo.y+23
+        else: #PISO
+            self.rectangulo_superior.x = self.rectangulo.x
+            self.rectangulo_superior.y = self.rectangulo.y-1
+            self.rectangulo_inferior.x = self.rectangulo.x
+            self.rectangulo_inferior.y = 694
+              
     def dibujar(self,pantalla):     
         if (DEBUG):
             pygame.draw.rect(pantalla,ROJO,self.rectangulo)
-            pygame.draw.rect(pantalla,AZUL,self.rectangulo_superior)
-            pygame.draw.rect(pantalla,AZUL,self.rectangulo_inferior)
+            pygame.draw.rect(pantalla,VERDE,self.rectangulo_superior)
+            pygame.draw.rect(pantalla,VERDE,self.rectangulo_inferior)
             
         pantalla.blit(self.superficie,self.rectangulo)
         
@@ -61,19 +93,15 @@ class plataforma:
                     self.rectangulo_inferior.y -= velocidad
                     if self.rectangulo.y < limite_alto:
                         self.abajo = True
-        else:
-            pass
             
-class piedra:
-    def __init__(self,imagen:str):
+class Piedra:
+    def __init__(self,imagen:str,x:int,y:int):
         self.superficie = pygame.image.load(imagen)
         self.rectangulo = self.superficie.get_rect()
-        self.rectangulo.x = 0
-        self.rectangulo.y = 0
-
-    def dibujar(self,pantalla,x:int,y:int):
         self.rectangulo.x = x
         self.rectangulo.y = y
+
+    def dibujar(self,pantalla):
         if (DEBUG):
             pygame.draw.rect(pantalla,ROJO,self.rectangulo)
         pantalla.blit(self.superficie,self.rectangulo)

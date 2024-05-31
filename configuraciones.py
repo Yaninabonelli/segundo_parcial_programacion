@@ -11,6 +11,8 @@ coordenadas_pantalla = (0,0)
 coordenadas_sacar_de_pantalla = (1400,-5)
 ubicacion_piso = 616
 un_segundo = 1000 # un segundo
+cinco_segundos = 5000
+tres_segundos = 3000
 
 fuente_gris = (192, 192, 192)
 fuente_negro = (0, 0, 0)
@@ -39,14 +41,15 @@ musica_pantalla_inicio.set_volume(0.07)
 sonido_seleccion = pygame.mixer.Sound(bebe_groot)
 sonido_seleccion.set_volume(0.7)
 
-musica_gameover = pygame.mixer.Sound(musica_game_over)
-musica_gameover.set_volume(0.07)
+sonido_thanos_gameover = pygame.mixer.Sound(sonido_soy_inevitable)
+sonido_thanos_gameover.set_volume(0.07)
+
 musica_nivel_uno = pygame.mixer.Sound(musica_primer_nivel)
-musica_nivel_uno.set_volume(0.07)
+musica_nivel_uno.set_volume(0.01)
 musica_nivel_dos = pygame.mixer.Sound(musica_segundo_nivel)
-musica_nivel_dos.set_volume(0.07)
+musica_nivel_dos.set_volume(0.01)
 musica_nivel_tres = pygame.mixer.Sound(musica_tercer_nivel)
-musica_nivel_tres.set_volume(0.07)
+musica_nivel_tres.set_volume(0.01)
 musica_fin_juego = pygame.mixer.SoundType(musica_win)
 musica_fin_juego.set_volume(0.07)
 
@@ -61,11 +64,25 @@ sonido_nave_enemiga.set_volume(0.01)
 
 sonido_resta_vida = pygame.mixer.Sound(sonido_pierde_vida)
 sonido_resta_vida.set_volume(0.1)
+
 sonido_gameover = pygame.mixer.Sound(sonido_game_over)
 sonido_gameover.set_volume(0.07)
 
 
 sonido_marciano = pygame.mixer.Sound(sonido_moustro)
-sonido_marciano.set_volume(0.02)
+sonido_marciano.set_volume(0.01)
 sonido_despegue = pygame.mixer.Sound(sonido_nave_despegue)
 sonido_despegue.set_volume(0.07)
+
+
+sonido_groot_dispara = pygame.mixer.Sound(sonido_laser)
+sonido_groot_dispara.set_volume(0.06)
+
+sonido_thanos_dispara = pygame.mixer.Sound(sonido_poder_thanos)
+sonido_thanos_dispara.set_volume(0.06)
+
+sonido_explosion_nave = pygame.mixer.Sound(explosion_nave)
+sonido_explosion_nave.set_volume(0.06)
+
+sonido_explosion_enemigo = pygame.mixer.Sound(explosion_enemigo)
+sonido_explosion_enemigo.set_volume(0.06)

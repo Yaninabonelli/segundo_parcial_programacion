@@ -68,20 +68,26 @@ groot_tres = "imagenes\groot03.png"
 groot_cuatro = "imagenes\groot04.png"
 groot_cinco = "imagenes\groot05.png"
 
-groot_izquierda_uno = "imagenes\groot_izq01.png"
-groot_izquierda_dos = "imagenes\groot_izq02.png"
-groot_izquierda_tres = "imagenes\groot_izq03.png"
-groot_izquierda_cuatro = "imagenes\groot_izq04.png"
-groot_izquierda_cinco = "imagenes\groot_izq05.png"
-
 lista_groot_derecha = [groot_uno,groot_dos,groot_tres,groot_cuatro,groot_cinco]
-lista_groot_izquierda = [groot_izquierda_uno,groot_izquierda_dos,groot_izquierda_tres,groot_izquierda_cuatro,groot_izquierda_cinco]
 
-laser_der = "imagenes\laser.png"
-laser_izq = "imagenes\laser_2.png"
+groot_muere_uno = "imagenes\groot_muere01.png"
+groot_muere_dos = "imagenes\groot_muere02.png"
+groot_muere_tres = "imagenes\groot_muere03.png"
+groot_muere_cuatro = "imagenes\groot_muere04.png"
+groot_muere_cinco = "imagenes\groot_muere05.png"
 
-bala_uno = "imagenes\\bala_derecha.png"
-bala_dos = "imagenes\\bala_izquierda.png"
+lista_groot_muere = [groot_muere_uno,groot_muere_dos,groot_muere_tres,groot_muere_cuatro,groot_muere_cinco]
+
+
+laser_derecha = "imagenes\laser.png"
+laser_izquierda = "imagenes\laser_2.png"
+
+lista_laser = [laser_derecha,laser_izquierda]
+
+bala_derecha = "imagenes\\bala_derecha.png"
+bala_izquierda = "imagenes\\bala_izquierda.png"
+
+lista_balas_groot =[bala_derecha,bala_izquierda]
 
 #ENEMIGOS
 #THANOS
@@ -93,8 +99,13 @@ thanos_golpea_uno="imagenes\\thanos_golpea_1.png"
 thanos_golpea_dos="imagenes\\thanos_golpea_2.png"
 thanos_ataque = "imagenes\\thanos_ataque.png"
 thanos_dispara ="imagenes\\thanos_dispara.png"
+thanos_muere_uno ="imagenes\\thanos_muere_1.png"
+thanos_muere_dos ="imagenes\\thanos_muere_2.png"
+thanos_muere_tres ="imagenes\\thanos_muere_3.png"
+thanos_muere_cuatro ="imagenes\\thanos_muere_4.png"
 
-diccionario_thanos = {"quieto":[thanos_quieto_uno,thanos_quieto_dos,thanos_quieto_tres,thanos_quieto_cuatro],"golpea":[thanos_ataque,thanos_golpea_uno,thanos_golpea_dos],"dispara":[thanos_ataque,thanos_dispara]}
+
+diccionario_thanos = {"quieto":[thanos_quieto_uno,thanos_quieto_dos,thanos_quieto_tres,thanos_quieto_cuatro],"golpea":[thanos_golpea_uno,thanos_golpea_dos],"dispara":[thanos_dispara],"muere":[thanos_muere_uno,thanos_muere_dos,thanos_muere_tres,thanos_muere_cuatro]}
 
 explosion_uno = "imagenes\explosion1.png"
 explosion_dos = "imagenes\explosion2.png"
@@ -105,6 +116,26 @@ explosion_seis = "imagenes\explosion6.png"
 explosion_siete = "imagenes\explosion1.png"
 
 lista_explosion = [explosion_uno,explosion_dos,explosion_tres,explosion_cuatro,explosion_cinco,explosion_seis,explosion_siete]
+
+explosion_azul_uno = "imagenes\explosion_uno.png"
+explosion_azul_dos = "imagenes\explosion_dos.png"
+explosion_azul_tres = "imagenes\explosion_tres.png"
+explosion_azul_cuatro = "imagenes\explosion_cuatro.png"
+explosion_azul_cinco = "imagenes\explosion_cinco.png"
+explosion_azul_seis = "imagenes\explosion_seis.png"
+explosion_azul_siete = "imagenes\explosion_siete.png"
+
+lista_explosion_azul = [explosion_azul_uno,explosion_azul_dos,explosion_azul_tres,explosion_azul_cuatro,explosion_azul_cinco,explosion_azul_seis,explosion_azul_siete]
+
+diccionario_explosiones = {"explosion_nave":lista_explosion,"explosion_enemigo":lista_explosion_azul}
+
+bola_uno ="imagenes\\bola_uno.png"
+bola_dos = "imagenes\\bola_dos.png"
+bola_tres ="imagenes\\bola_tres.png"
+bola_cuatro = "imagenes\\bola_cuatro.png"
+bola_cinco ="imagenes\\bola_cinco.png"
+
+lista_de_bolas = [bola_uno,bola_dos,bola_tres,bola_cuatro,bola_cinco]
 
 #ROBOTS
 robot_uno = "imagenes\\robot_uno.png"
@@ -151,6 +182,11 @@ plataforma_dos = "imagenes\plataforma_grande.png"
 plataforma_tres = "imagenes\plataforma_movediza.png"
 plataforma_cuatro = "imagenes\plataforma_nave.png"
 
+plataforma_piso_uno = "imagenes\plataforma_piso_uno.png"
+plataforma_piso_dos = "imagenes\plataforma_piso_dos.jpg"
+plataforma_piso_tres = "imagenes\plataforma_piso_tres.png"
+
+
 #NAVE SALIDA
 nave_salida_uno = "imagenes\\nave_salida.png"
 nave_salida_dos = "imagenes\\nave_salida_2.png"
@@ -168,6 +204,9 @@ fondo_primer_nivel = "imagenes\primer_nivel.png"
 fondo_segundo_nivel= "imagenes\segundo_nivel.jpg"
 fondo_tercer_nivel = "imagenes\\tercer_nivel.png"
 
+lista_de_fondos = [fondo_primer_nivel,fondo_segundo_nivel,fondo_tercer_nivel]
+
+
 #SONIDOS
 bebe_groot = "audio\sonido_bebe_groot.mp3"
 sonido_game_over = "audio\sonido_game_over.mp3"
@@ -179,12 +218,16 @@ sonido_gana_gema = "audio\sonido_gana_gema.mp3"
 sonido_nave_despegue = "audio\sonido_nave_despegue.mp3"
 sonido_moustro = "audio\sonido_moustro.mp3"
 sonido_nave = "audio\sonido_nave.mp3"
+sonido_laser = "audio\sonido_laser.mp3"
+explosion_nave = "audio\explosion_nave.mp3"
+explosion_enemigo = "audio\explosion_enemigo.mp3"
+sonido_poder_thanos = "audio\poder_thanos.mp3"
 
 #MUSICA
 musica_inicio = "audio\musica_inicio.mp3"
 musica_primer_nivel ="audio\musica_primer_nivel.mp3"
 musica_segundo_nivel = "audio\musica_segundo_nivel.mp3"
 musica_tercer_nivel = "audio\musica_tercer_nivel.mp3"
-musica_game_over = "audio\musica_game_over.mp3"
+sonido_soy_inevitable = "audio\soy_inevitable.mp3"
 musica_win = "audio\musica_win.mp3"
 
