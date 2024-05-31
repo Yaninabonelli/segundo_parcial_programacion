@@ -25,6 +25,9 @@ pygame.time.set_timer(cronometro,un_segundo)
 tiempo_de_naves = pygame.USEREVENT
 pygame.time.set_timer(tiempo_de_naves,tres_segundos)
 
+naves_tercer_nivel = pygame.USEREVENT
+pygame.time.set_timer(naves_tercer_nivel,un_segundo)
+
 #clock
 clock = pygame.time.Clock()
 
@@ -140,7 +143,6 @@ def ver_score(sonido_on):
         pygame.display.update()
 
 def jugar(sonido_on):
-    lista_plataformas = []
     lista_enemigos = [] 
     lista_de_naves = []   
     lista_gemas = []
@@ -154,8 +156,16 @@ def jugar(sonido_on):
     #NAVE ENEMIGO
     nave_enemigo = Nave(lista_naves,30)
     lista_de_naves.append(nave_enemigo)
+    plataforma_chica = Plataforma(plataforma_uno,"estatica",(500,375),"chica")
+    plataforma_chica_dos = Plataforma(plataforma_uno,"estatica",(280,450),"chica")
+    plataforma_grande = Plataforma(plataforma_dos,"estatica",(70,145),"grande")
+    plataforma_movediza = Plataforma(plataforma_tres,"movediza",(1025,190),"movediza")
+    plataforma_movediza_dos = Plataforma(plataforma_tres,"movediza",(775,600),"movediza")
+    plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave")
+    plataforma_piso = Plataforma(plataforma_piso_uno,"estatica",(0,617),"piso")
+    lista_primer_nivel = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
     #PERSONAJE
-    groot = Heroe(groot_uno,lista_groot_derecha,lista_laser,lista_balas_groot,lista_plataformas,lista_groot_muere)
+    groot = Heroe(groot_uno,lista_groot_derecha,lista_laser,lista_balas_groot,lista_primer_nivel,lista_groot_muere)
     
     ultimo_movimiento = "derecha"
     segundos = 0
@@ -191,7 +201,11 @@ def jugar(sonido_on):
                     
                 if event.type == tiempo_de_naves and nivel == 2:
                     nave_enemigo = Nave(lista_naves,20)
-                    lista_de_naves.append(nave_enemigo)                        
+                    lista_de_naves.append(nave_enemigo)    
+                    
+                if event.type == naves_tercer_nivel and nivel == 3:
+                    nave_enemigo = Nave(lista_naves,30)
+                    lista_de_naves.append(nave_enemigo)                    
                         
         lista_de_teclas = pygame.key.get_pressed()
         
@@ -216,15 +230,6 @@ def jugar(sonido_on):
                 
         if nivel == 1:
             if iniciar_nivel == True:
-                plataforma_chica = Plataforma(plataforma_uno,"estatica",(500,375),"chica")
-                plataforma_chica_dos = Plataforma(plataforma_uno,"estatica",(280,450),"chica")
-                plataforma_grande = Plataforma(plataforma_dos,"estatica",(70,145),"grande")
-                plataforma_movediza = Plataforma(plataforma_tres,"movediza",(1025,190),"movediza")
-                plataforma_movediza_dos = Plataforma(plataforma_tres,"movediza",(775,600),"movediza")
-                plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave")
-                plataforma_piso = Plataforma(plataforma_piso_uno,"estatica",(0,617),"piso")
-                lista_plataformas = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
-                groot.lista_plataformas = lista_plataformas
                 #ENEMIFOS       
                 marciano = Enemigo(lista_marcianos,(82,100),5,"marciano",725,79)
                 robot_uno = Enemigo(lista_robots,(961,573),5,"robot",1250,300)
@@ -240,14 +245,11 @@ def jugar(sonido_on):
                 if (sonido_on):
                     musica_nivel_uno.play()
                 iniciar_nivel = False #CONFIGURACION UNICA
-            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_uno,lista_naves,diccionario_explosiones,lista_enemigos,thanos)  
+            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_uno,lista_naves,diccionario_explosiones,lista_enemigos,thanos,lista_primer_nivel)  
             if resultado == True:
                 if len(lista_enemigos)>0:
                     for enemigo  in lista_enemigos:
                         lista_enemigos.remove(enemigo)
-                if len(lista_plataformas)>0:
-                    for plataforma  in lista_plataformas:
-                        lista_plataformas.remove(plataforma) 
                 musica_nivel_uno.stop()
                 iniciar_nivel = True
                 segundos = 0
@@ -255,6 +257,7 @@ def jugar(sonido_on):
                 nivel = 2
         elif nivel ==2:
             if iniciar_nivel == True:
+                lista_segundo_nivel = []
                 #UBICACION PLATAFORMAS
                 plataforma_chica = Plataforma(plataforma_uno,"estatica",(350,430),"chica")
                 plataforma_chica_dos = Plataforma(plataforma_uno,"estatica",(750,430),"chica")
@@ -263,8 +266,7 @@ def jugar(sonido_on):
                 plataforma_movediza_dos = Plataforma(plataforma_tres,"movediza",(1000,600),"movediza")
                 plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave")
                 plataforma_piso = Plataforma(plataforma_piso_dos,"estatica",(0,617),"piso")
-                lista_plataformas = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
-                groot.lista_plataformas = lista_plataformas
+                lista_segundo_nivel = [plataforma_chica,plataforma_chica_dos,plataforma_grande,plataforma_movediza,plataforma_movediza_dos,plataforma_nave,plataforma_piso]
                 #GEMAS 
                 gema_uno = Gema(gema_violeta,(640,60))
                 gema_dos = Gema(gema_verde,(440,300))
@@ -283,48 +285,36 @@ def jugar(sonido_on):
                 if (sonido_on): 
                     musica_nivel_dos.play()
                 iniciar_nivel = False
-            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_dos,lista_naves,diccionario_explosiones,lista_enemigos,thanos)  
+            resultado = dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_dos,lista_naves,diccionario_explosiones,lista_enemigos,thanos,lista_segundo_nivel)  
             if resultado == True:
-                print("entro")
                 musica_nivel_dos.stop() 
                 if len(lista_enemigos)>0:
                     for enemigo  in lista_enemigos:
                         lista_enemigos.remove(enemigo)
-                if len(lista_plataformas)>0:
-                    for plataforma  in lista_plataformas:
-                        lista_plataformas.remove(plataforma)        
-                variable = len(lista_plataformas)    
-                print("aaaaaaaaaaaaaaaaaaaaaaaaaaasaaa {0}",variable)       
                 segundos = 0
                 minutos = 0
                 nivel = 3
         elif nivel == 3:
+            lista_tercer_nivel = []
             if iniciar_nivel == True:
-                nave_escape_tres = Nave_salida(nave_salida_dos,(1178,20),lista_imagenes_humo)
                 incremento = 100
-                for i in range(7):
-                    if i%2 == 0:
-                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
-                        plataforma_movediza.posicion_inicial = True
-                        print("par")
-                    else:
-                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
-                        plataforma_movediza.posicion_inicial = False
-                        print("impar")
-                    incremento = 160 + incremento
-                    lista_plataformas.append(plataforma_movediza) 
-                     
+                nave_escape_tres = Nave_salida(nave_salida_dos,(1178,20),lista_imagenes_humo)
                 plataforma_piso = Plataforma(plataforma_piso_tres,"estatica",(0,617),"piso")  
                 plataforma_nave = Plataforma(plataforma_cuatro,"estatica",(1178,200),"nave") 
-                
-                lista_plataformas.append(plataforma_piso)
-                lista_plataformas.append(plataforma_nave)
-                groot.lista_plataformas = lista_plataformas
-                
+                lista_tercer_nivel= [plataforma_piso,plataforma_nave]
+                incremento = 100
+                for i in range(6):
+                    if i%2 == 0:
+                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
+                        plataforma_movediza.abajo = False
+                    else:
+                        plataforma_movediza = Plataforma(plataforma_tres,"movediza",((i+incremento),200),"movediza")
+                    incremento = 200 + incremento
+                    lista_tercer_nivel.append(plataforma_movediza) 
                 if (sonido_on): 
                     musica_nivel_tres.play()
                 iniciar_nivel = False
-            resultado =  dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_tres,lista_naves,diccionario_explosiones,lista_enemigos,thanos)
+            resultado =  dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_de_fondos,pantalla,coordenadas_pantalla,lista_gemas,groot,nave_escape_tres,lista_naves,diccionario_explosiones,lista_enemigos,thanos,lista_tercer_nivel)
             if resultado == True:
                 apagar_musica()
                 finalizar_juego(groot.nombre,groot.puntaje,sonido_on)
@@ -464,10 +454,12 @@ def finalizar_juego(nombre,puntaje,sonido_on):
           
         pygame.display.update()    
       
-def dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_fondos,pantalla,coordenadas:tuple,lista_de_gemas,personaje,nave_escape,lista_imagenes_naves,diccionario_explosiones,lista_de_enemigos,thanos_obj):
+def dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_fondos,pantalla,coordenadas:tuple,lista_de_gemas,personaje,nave_escape,lista_imagenes_naves,diccionario_explosiones,lista_de_enemigos,thanos_obj,lista_plataformas):
     gana_partida = False
 
+    personaje.lista_plataformas = lista_plataformas
     if nivel == 1:
+        
         fondo = pygame.image.load(lista_fondos[0]) 
         pantalla.blit(fondo,coordenadas)
         personaje.lista_plataformas[4].posicion_inicial = False #movediza_dos
@@ -582,13 +574,12 @@ def dibujar_nivel(lista_de_naves,sonido_on,nivel,lista_fondos,pantalla,coordenad
                     lista_de_naves.remove(element)   
     
     #COMPORTAMIMENTO PLATAFORMAS
-    if len(personaje.lista_plataformas)>0:
-        for plataforma in personaje.lista_plataformas:
+    if len(lista_plataformas)>0:
+        for plataforma in lista_plataformas:
             if plataforma.tipo == "movediza":
                 plataforma.mover_plataforma(ubicacion_piso,140,5) 
-                
                 if nivel == 3:
-                    plataforma.mover_plataforma(500,10,10) 
+                    plataforma.mover_plataforma(600,10,3) 
             plataforma.dibujar(pantalla)                
         
     #COMPORTAMIENTO DE NAVES

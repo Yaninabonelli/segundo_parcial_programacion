@@ -28,7 +28,7 @@ class Villano:
         self.sentido = "izquierda"
         self.mostrar_enemigo = True
         self.velocidad = 2
-        self.vidas = 10
+        self.vidas = 100
         
         #TIEMPOS ENTRE MOVIMIENTOS
         #disparo
