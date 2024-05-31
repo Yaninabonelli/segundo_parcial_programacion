@@ -168,7 +168,7 @@ def jugar(sonido_on):
     if len(nombre_usuario) > 0 :
         groot.nombre = nombre_usuario
         running = True
-        nivel = 1
+        nivel = 2
     else:
         running = False
         
